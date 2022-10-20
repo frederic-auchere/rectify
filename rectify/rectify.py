@@ -102,8 +102,8 @@ def rotationmatrix(angle, axis):
     sin = np.sin(angle)
 
     if axis == 0:  # Rz
-        matrix = np.array([[cos, sin, 0],
-                           [-sin, cos, 0],
+        matrix = np.array([[cos, -sin, 0],
+                           [sin, cos, 0],
                            [0, 0, 1]])
     elif axis == 1:  # Ry
         matrix = np.array([[cos, 0, sin],
