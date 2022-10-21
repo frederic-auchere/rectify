@@ -909,8 +909,8 @@ class Rectifier:
         """
 
         if shape != self.shape or xlims != self.xlims or ylims != self.ylims:
-            self.coordinates = np.meshgrid(np.linspace(xlims[0], xlims[1], shape[0], dtype=dtype),
-                                           np.linspace(ylims[0], ylims[1], shape[1], dtype=dtype))
+            self.coordinates = np.meshgrid(np.linspace(xlims[0], xlims[1], shape[1], dtype=dtype),
+                                           np.linspace(ylims[0], ylims[1], shape[0], dtype=dtype))
             self.shape, self.xlims, self.ylims = shape, xlims, ylims
 
         x, y = self.coordinates
