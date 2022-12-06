@@ -417,7 +417,7 @@ class CarringtonTransform(CompositeTransform):
         else:
             raise ValueError('No roll value found in header')
 
-        self.reference_date = reference_date
+        self.reference_date = hdr['DATE-OBS'] if reference_date is None else reference_date
 
         cos = np.cos(np.radians(roll))
         sin = np.sin(np.radians(roll))
