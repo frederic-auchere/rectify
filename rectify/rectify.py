@@ -627,8 +627,8 @@ class DistortionMatrix(Transform):
             # nsamples: number of data points on each axis
             # stored in the ASCII file in comment lines
             comments = data.meta['comments']
-            self.maxfield = np.float((comments[-5]).split()[-1])
-            self.nsamples = np.int(np.float((comments[-4]).split()[-1]))
+            self.maxfield = float((comments[-5]).split()[-1])
+            self.nsamples = np.int(float((comments[-4]).split()[-1]))
             self.step = 2 * self.maxfield / self.nsamples
 
             shape = (self.nsamples, self.nsamples)
