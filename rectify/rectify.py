@@ -46,8 +46,8 @@ def interpol2d(image, x, y, order=1, fill=0, opencv=False, dst=None):
         elif order == 2:
             inter = cv2.INTER_CUBIC
         cv2.remap(image,
-                  x.astype(np.float32),  # converts to float 32 for opencv
-                  y.astype(np.float32),  # does nothing with default dtype
+                  x.astype(float),  # converts to float 32 for opencv
+                  y.astype(float),  # does nothing with default dtype
                   inter,  # interpolation method
                   dst,  # destination array
                   cv2.BORDER_CONSTANT,  # fills in with constant value
@@ -298,7 +298,7 @@ class HomographicTransform(LinearTransform):
 
     def __init__(self,
                  matrix,
-                 dtype=np.float32,
+                 dtype=float,
                  direction='forward'):
         super().__init__(direction=direction)
         self._fmatrix = matrix.astype(dtype)
@@ -538,9 +538,9 @@ class DistortionMatrix(Transform):
                 """
                 Reformats the data read in the txt file
                 """
-                degree = np.int(items[axis + 'degree'])
+                degree = int(items[axis + 'degree'])
                 d = np.asarray(items['d' + axis + 'k'].split(),
-                               dtype=np.float32).reshape((degree + 1, degree + 1))
+                               dtype=float).reshape((degree + 1, degree + 1))
                 if axis == 'x':
                     d[1, 0] += scale  # poly encode the distortion: add scale
                 elif axis == 'y':
@@ -552,7 +552,7 @@ class DistortionMatrix(Transform):
             config = configparser.ConfigParser()
             config.read(self.file)
             items = dict(config.items(direction))
-            self.scale = np.float32(items['scale'])
+            self.scale = float(items['scale'])
             self.coefficients = (reform_poly(items, 'x', self.scale),
                                  reform_poly(items, 'y', self.scale))
 
@@ -628,7 +628,7 @@ class DistortionMatrix(Transform):
             # stored in the ASCII file in comment lines
             comments = data.meta['comments']
             self.maxfield = float((comments[-5]).split()[-1])
-            self.nsamples = np.int(float((comments[-4]).split()[-1]))
+            self.nsamples = int(float((comments[-4]).split()[-1]))
             self.step = 2 * self.maxfield / self.nsamples
 
             shape = (self.nsamples, self.nsamples)
@@ -761,9 +761,9 @@ class DistortionMatrix(Transform):
                     config = configparser.ConfigParser()
                     config.read(self.file)
                     items = dict(config.items('gen'))
-                    self.phys_pix_size = np.float32(items['phys_pix_size'])
-                    self.ref_x_pix = np.float32(items['ref_x_pix'])
-                    self.ref_y_pix = np.float32(items['ref_y_pix'])
+                    self.phys_pix_size = float(items['phys_pix_size'])
+                    self.ref_x_pix = float(items['ref_x_pix'])
+                    self.ref_y_pix = float(items['ref_y_pix'])
             else:
                 raise FileNotFoundError
             # pos2field and field2pos are DistortionPolynomial objects initialized
@@ -776,9 +776,9 @@ class DistortionMatrix(Transform):
                 self.pos2field = self.DistortionPolynomial(file, 'pos2field')
                 self.field2pos = self.DistortionPolynomial(file, 'field2pos')
         else:  # Rebuids polynomials from Zemax data
-            self.phys_pix_size = np.float32(0.01)
-            self.ref_x_pix = np.float32(1535.5)
-            self.ref_y_pix = np.float32(1535.5)
+            self.phys_pix_size = float(0.01)
+            self.ref_x_pix = float(1535.5)
+            self.ref_y_pix = float(1535.5)
             self.zemax_data = self.ZemaxData(file)
             coeffs = self.zemax_data.fit('pos2field')
             self.pos2field = self.DistortionPolynomial(coefficients=(0, coeffs))
@@ -881,7 +881,7 @@ class Rectifier:
     opencv: if False (default), uses scipy map_coordinates. If True, uses
             opencv remap function (faster)
 
-    dtype: np.float32 (default) or np.float64. 32 bit computations are faster
+    dtype: float (default) or np.float64. 32 bit computations are faster
            and should be sufficient in most cases. If opencv is True,
            computations are made in 32 bits in any case.
 
@@ -900,7 +900,7 @@ class Rectifier:
 
     def __call__(self,
                  image, shape, xlims, ylims,
-                 order=1, dst=None, opencv=False, dtype=np.float32, fill=0):
+                 order=1, dst=None, opencv=False, dtype=float, fill=0):
         """
         image: ndarray containing the image to rectify
         shape: shape of the regular grid on which to interpolate
