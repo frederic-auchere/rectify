@@ -46,8 +46,8 @@ def interpol2d(image, x, y, order=1, fill=0, opencv=False, dst=None):
         elif order == 2:
             inter = cv2.INTER_CUBIC
         cv2.remap(image,
-                  x.astype(float),  # converts to float 32 for opencv
-                  y.astype(float),  # does nothing with default dtype
+                  x.astype(np.float32),  # converts to float 32 for opencv
+                  y.astype(np.float32),  # does nothing with default dtype
                   inter,  # interpolation method
                   dst,  # destination array
                   cv2.BORDER_CONSTANT,  # fills in with constant value
