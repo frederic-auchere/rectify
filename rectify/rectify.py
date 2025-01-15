@@ -40,7 +40,7 @@ def interpol2d(image, x, y, order=1, fill=0, opencv=False, dst=None):
 
     if opencv:
         if order == 0:
-            inter = cv2.INTER_NEAREST_EXACT
+            inter = cv2.INTER_NEAREST
         elif order == 1:
             inter = cv2.INTER_LINEAR
         elif order == 2:
