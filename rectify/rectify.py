@@ -42,7 +42,7 @@ def interpol2d(image, x, y, order=1, fill=0, opencv=False, dst=None):
         if order == 0:
             inter = cv2.INTER_NEAREST_EXACT
         elif order == 1:
-            inter = cv2.INTER_LINEAR_EXACT
+            inter = cv2.INTER_LINEAR
         elif order == 2:
             inter = cv2.INTER_CUBIC
         cv2.remap(image,
@@ -902,7 +902,7 @@ class Rectifier:
                  image, shape, xlims, ylims,
                  order=1, dst=None, opencv=False, dtype=float, fill=0):
         """
-        image: ndarray containing the image to rectify
+         image: ndarray containing the image to rectify
         shape: shape of the regular grid on which to interpolate
         xlims: x limits of the regular grid on which to interpolate
         ylims: y limits of the regular grid on which to interpolate
