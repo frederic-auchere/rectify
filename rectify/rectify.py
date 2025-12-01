@@ -411,16 +411,18 @@ class CarringtonTransform(CompositeTransform):
                  zclip=0,
                  c2limb=False):
         if 'CROTA' in hdr:
-            roll = hdr['CROTA']
+            roll = np.radians(hdr['CROTA'])
         elif 'CROTA2' in hdr:
-            roll = hdr['CROTA2']
+            roll = np.radians(hdr['CROTA2'])
+        elif 'PC1_1' in hdr and 'PC2_1' in hdr:
+            roll = np.arctan2(hdr['PC2_1'], hdr['PC1_1'])
         else:
             raise ValueError('No roll value found in header')
 
         self.reference_date = hdr['DATE-OBS'] if reference_date is None else reference_date
 
-        cos = np.cos(np.radians(roll))
-        sin = np.sin(np.radians(roll))
+        cos = np.cos(roll)
+        sin = np.sin(roll)
 
         dx = cos * hdr['CRVAL1'] + sin * hdr['CRVAL2']
         dy = -sin * hdr['CRVAL1'] + cos * hdr['CRVAL2']
