@@ -433,7 +433,7 @@ class CarringtonTransform(CompositeTransform):
             hdr['DSUN_OBS'] / (radius_correction * astropy.constants.R_sun.value),
             hdr['CRLN_OBS'],
             hdr['CRLT_OBS'],
-            roll,
+            np.degrees(roll),
             hdr['CDELT1'],
             hdr['CDELT2'],
             direction=direction,
